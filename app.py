@@ -83,6 +83,13 @@ def main():
     
     # Sidebar
     with st.sidebar:
+
+        # Logout button
+        if st.button("Logout"):
+            st.session_state.clear()
+            st.switch_page("pages/login.py")
+        st.divider()
+        
         st.header("🎛️ Controls")
         
         # Agent selection
@@ -109,13 +116,9 @@ def main():
         
         # Custom agent creator
         show_agent_creator(st.session_state.agent_registry)
+        st.markdown("Note that more custom agents consume more tokens.")
 
-        st.divider()
-
-        # Logout button
-        if st.button("Logout"):
-            st.session_state.clear()
-            st.switch_page("pages/login.py")
+        
 
         st.divider()
 

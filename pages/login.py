@@ -6,7 +6,7 @@ load_dotenv()
 
 # Set page config
 st.set_page_config(
-    page_title="Login - AI LECTURER SUPPORT SYSTEM",
+    page_title="Login - YapYard",
     layout="centered",
     initial_sidebar_state="collapsed"
 )
@@ -32,7 +32,7 @@ def check_credentials(username, password, api_key):
             st.error("❌ Invalid GROQ API Key format. Please ensure it starts with 'gsk_' and is of correct length.")
             return False
             
-        return username == default_username and password == default_password #and api_key == os.getenv('GROQ_API_KEY')
+        return username == default_username and password == default_password 
     except Exception as e:
         st.error(f"❌ Authentication error: {str(e)}")
         return False
@@ -56,12 +56,12 @@ st.markdown("""
         padding: 2rem;
         border-radius: 10px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        background-color: #f8f9fa;
+        background-color: black;
     }
     .login-header {
         text-align: center;
         margin-bottom: 2rem;
-        color: #2c3e50;
+        color: white;
     }
     .stButton > button {
         width: 100%;
@@ -84,8 +84,8 @@ st.markdown("<div class='login-container'>", unsafe_allow_html=True)
 # Header
 st.markdown("""
 <div class='login-header'>
-    <h1>🎓 AI LECTURER SUPPORT SYSTEM</h1>
-    <p>Please login to access the system</p>
+    <h1>🗣️ YapYard</h1>
+    <p>Please login to access </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -107,11 +107,20 @@ with st.form("login_form", clear_on_submit=True):
     )
 
     api_key = st.text_input(
-        "🔑 API Key",
+        "🔑 GROQ API KEY",
         type="password",
         placeholder="Enter your GROQ API Key",
         help="Enter your GROQ API Key from console.groq.com/keys"
     )
+
+    st.markdown("### Note")
+    st.markdown("""
+    <div class='security-note'>
+        <p>Your GROQ API Key is used to authenticate your requests. Do not share it with others.</p>
+        <p>For security reasons, your API Key will not be stored in the database. It will be used only for the current session.</p>
+        <p>Enter your GROQ API Key from <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Login button
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -129,7 +138,6 @@ with st.form("login_form", clear_on_submit=True):
                 st.session_state.groq_api_key = api_key # Store the API key in session state
                 st.session_state.login_attempts = 0
                 st.success("✅ Login successful! Redirecting...")
-                st.balloons()
                 st.rerun()
             else:
                 st.session_state.login_attempts += 1
@@ -143,33 +151,3 @@ with st.form("login_form", clear_on_submit=True):
 st.markdown("</div>", unsafe_allow_html=True)
 
 # Information section
-st.markdown("---")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.markdown("""
-    ### 📋 Features
-    - 📤 Upload Excel/CSV files
-    - 🤖 AI-powered question answering
-    - 💬 Chat history management
-    - 🔍 Advanced data search
-    """)
-
-with col2:
-    st.markdown("""
-    ### 🛡️ Security
-    - 🔐 Secure authentication
-    - 👤 User session management
-    - 💾 Persistent chat history
-    - 🔒 Data privacy protection
-    """)
-
-# Footer
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #7f8c8d;'>
-    <p>🎓 AI Lecturer Support System v2.0</p>
-    <p>For support, contact your system administrator</p>
-</div>
-""", unsafe_allow_html=True)
