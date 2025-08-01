@@ -71,7 +71,7 @@ class CommentEngine:
                 # Fallback comment if generation fails
                 comments.append({
                     'author': selected_agent_name,
-                    'text': f"[Comment generation failed: {str(e)[:50]}...]",
+                    'text': f"[Comment generation failed .....",
                     'timestamp': f"{random.randint(1, 60)}m ago"
                 })
         

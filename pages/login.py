@@ -135,7 +135,7 @@ with st.form("login_form", clear_on_submit=True):
             if check_credentials(username, password, api_key):
                 st.session_state.authenticated = True
                 st.session_state.username = username
-                st.session_state.groq_api_key = api_key # Store the API key in session state
+                st.session_state.groq_api_key = api_key.strip()# Store the API key in session state
                 st.session_state.login_attempts = 0
                 st.success("✅ Login successful! Redirecting...")
                 st.rerun()

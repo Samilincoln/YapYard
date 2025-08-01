@@ -90,6 +90,7 @@ def main():
             st.switch_page("pages/login.py")
         st.divider()
         
+        
         st.header("🎛️ Controls")
         
         # Agent selection

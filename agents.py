@@ -3,20 +3,23 @@ from typing import Dict, List
 import streamlit as st
 from dotenv import load_dotenv
 import os
-# from crewai import Agent
-# from crewai import LLM
-
-load_dotenv()
-
 import streamlit as st
 
-api_key = st.session_state.groq_api_key if 'groq_api_key' in st.session_state else os.getenv("GROQ_API_KEY")
 
+api_key = st.session_state.get("groq_api_key")
+
+
+if not api_key or not api_key.startswith("gsk_"):
+    st.error("Authentication Failed. Please login first.")
+    st.switch_page("pages/login.py")
+    st.stop()
 
 llm = LLM(
     model="groq/llama3-70b-8192",
-    api_key=api_key
-    )
+    api_key=api_key.strip()  # strip any whitespace
+)
+
+
 
 class AgentRegistry:
     """Manages all available agents for YapYard"""
