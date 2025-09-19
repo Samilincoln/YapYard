@@ -6,6 +6,16 @@ from new_agent import show_agent_creator
 from utils import format_content_preview, calculate_heat_rating, get_toxicity_level
 import time
 
+import chromadb
+
+# Force Chroma to use DuckDB instead of SQLite
+client = chromadb.Client(
+    chromadb.config.Settings(
+        chroma_db_impl="duckdb+parquet",  # avoids sqlite
+        persist_directory=".chroma"       # or None for memory-only
+    )
+)
+
 
 # Configure page
 st.set_page_config(
