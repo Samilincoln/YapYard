@@ -9,12 +9,9 @@ import time
 import chromadb
 
 # Force Chroma to use DuckDB instead of SQLite
-client = chromadb.Client(
-    chromadb.config.Settings(
-        chroma_db_impl="duckdb+parquet",  # avoids sqlite
-        persist_directory=".chroma"       # or None for memory-only
-    )
-)
+import chromadb
+
+client = chromadb.Client() 
 
 
 # Configure page
