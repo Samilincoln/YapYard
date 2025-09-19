@@ -117,4 +117,4 @@
   
  ## 📍 Author Notes 
   
- Created by Samson Agboola © 2025 — AI tooling for creative bravery.
+ Created by Olalekan Samson Agboola © 2025 — AI tooling for creative bravery.
