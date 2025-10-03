@@ -1,10 +1,12 @@
-from crewai import Agent, Task, Crew
-import random
-from typing import List, Dict
 import time
-from agents import AgentRegistry
+import random
 import traceback
-from crewai import Task, Crew
+from typing import List, Dict
+from agents import AgentRegistry
+from crewai import Agent, Task, Crew
+from textwrap import shorten
+
+
 
 class CommentEngine:
     """Generates realistic comments using CrewAI agents"""
