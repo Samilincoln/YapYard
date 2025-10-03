@@ -68,10 +68,14 @@ class CommentEngine:
                 })
                 
             except Exception as e:
+                # Log the actual error with traceback
+                traceback_str = traceback.format_exc()
+                print(traceback_str)  # Log the traceback for debugging
+
                 # Fallback comment if generation fails
                 comments.append({
                     'author': selected_agent_name,
-                    'text': f"[Comment generation failed .....",
+                    'text': "[Comment generation failed: An error occurred]",
                     'timestamp': f"{random.randint(1, 60)}m ago"
                 })
         
