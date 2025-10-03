@@ -30,8 +30,8 @@ COPY . .
 EXPOSE 8501
 
 # Healthcheck to ensure Streamlit started
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:8501/_stcore/health || exit 1
+# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+#   CMD curl -f http://localhost:8501/_stcore/health || exit 1
 
 # Use environment variables for flexibility
 ENV STREAMLIT_SERVER_PORT=8501
