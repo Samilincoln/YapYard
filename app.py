@@ -30,12 +30,12 @@ from new_agent import show_agent_creator
 from utils import format_content_preview, calculate_heat_rating, get_toxicity_level
 import time
 
-import chromadb
+# import chromadb
 
-# Force Chroma to use DuckDB instead of SQLite
-import chromadb
+# # Force Chroma to use DuckDB instead of SQLite
+# import chromadb
 
-client = chromadb.Client() 
+# client = chromadb.Client() 
 
 
 # Configure page
