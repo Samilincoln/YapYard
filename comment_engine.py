@@ -185,4 +185,4 @@ class CommentEngine:
         if comment.startswith('"') and comment.endswith('"'):
             comment = comment[1:-1]
         
-        return comment[:280]  # Limit length like Twitter
+        return comment[:600]  # Limit length like Twitter
