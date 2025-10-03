@@ -15,7 +15,7 @@ if not api_key or not api_key.startswith("gsk_"):
     st.stop()
 
 llm = LLM(
-    model="groq/llama3-70b-8192",
+    model="groq/gemma2-9b-it",
     api_key=api_key.strip()  # strip any whitespace
 )
 
