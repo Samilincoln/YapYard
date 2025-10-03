@@ -1,16 +1,42 @@
-from crewai import Task, Crew
-import random
-from typing import List, Dict
 import time
-from agents import AgentRegistry
+import random
 import traceback
-from crewai import Task, Crew
+from typing import List, Dict
+from agents import AgentRegistry
+from crewai import Agent, Task, Crew
+from textwrap import shorten
+
+
 
 class CommentEngine:
     """Generates realistic comments using CrewAI agents"""
     
     def __init__(self, agent_registry: AgentRegistry):
         self.agent_registry = agent_registry
+
+        self.summarizer_agent = Agent(
+            name="Summarizer",
+            role="Condenses long content",
+            goal="Summarize input into <=200 words while preserving key ideas",
+            backstory="Expert at summarizing long text into digestible summaries"
+        )
+
+    def _prepare_content(self, content: str, max_chars: int = 800) -> str:
+        """Summarize or truncate overly long content"""
+        if len(content) > max_chars:
+            try:
+                summary_task = Task(
+                    description=f"Summarize this text into <=200 words:\n\n{content}",
+                    agent=self.summarizer_agent,
+                    expected_output="Concise summary of the text"
+                )
+                crew = Crew(agents=[self.summarizer_agent], tasks=[summary_task], verbose=False)
+                summary = str(crew.kickoff()).strip()
+                return summary if summary else shorten(content, width=max_chars, placeholder="... [truncated]")
+            except Exception:
+                # fallback: safe truncation
+                return shorten(content, width=max_chars, placeholder="... [truncated]")
+        return content
     
     def generate_comments(self, content: str, selected_agents: List[str], num_comments: int) -> List[Dict]:
         """Generate comments from selected agents"""
@@ -22,6 +48,9 @@ class CommentEngine:
         
         if not selected_agent_names_pool:
             return []
+
+        # 🔹 ensure safe content
+        safe_content = self._prepare_content(content)
         
         for i in range(num_comments):
             # Randomly select an agent name from the pool
@@ -31,7 +60,7 @@ class CommentEngine:
             # Create a task for the agent
             comment_task = Task(
                 description=f"""
-                You are commenting on this content: "{content}"
+                You are commenting on this content: "{safe_content}"
                 
                 Write a short realistic social media comment that reflects your personality and goals.
                 The comment should be:
@@ -89,10 +118,12 @@ class CommentEngine:
         if not selected_agent:
             raise ValueError(f"Agent '{agent_to_reply}' not found.")
 
+        safe_content = self._prepare_content(original_content)
+
         reply_task = Task(
             description=f"""
             You are participating in a social media discussion.
-            Original content: "{original_content}"
+            Original content: "{safe_content}"
             Original comment from {original_comment_author}: "{original_comment_text}"
             User's reply to the original comment: "{user_reply}"
 

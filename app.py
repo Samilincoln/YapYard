@@ -1,3 +1,27 @@
+# >>> MUST BE THE FIRST LINES IN app.py (no imports above these)
+import os, sys
+
+# Option A: prefer switching chroma to DuckDB (avoid sqlite entirely)
+# Set this BEFORE chromadb/crewai import (also save it as a Streamlit env var)
+os.environ.setdefault("CHROMA_DB_IMPL", "duckdb+parquet")
+# optional: change crewai storage dir
+os.environ.setdefault("CREWAI_STORAGE_DIR", "./.crewai_storage")
+
+# Option B: fallback — force Python to use bundled modern sqlite
+# (keeps code using sqlite but gives a modern sqlite implementation)
+try:
+    import pysqlite3 as pysqlite3_mod  # installed from pysqlite3-binary
+    sys.modules['sqlite3'] = pysqlite3_mod
+except Exception as e:
+    # if this fails, keep going so we can see the original error in logs
+    print("pysqlite3 import/override failed:", e)
+
+# Now it is safe to import the rest of your app
+# from agents import AgentRegistry   # <-- OK now
+# from crewai import Task, Crew
+# import streamlit as st
+
+
 import streamlit as st
 import os
 from agents import AgentRegistry
@@ -5,6 +29,13 @@ from comment_engine import CommentEngine
 from new_agent import show_agent_creator
 from utils import format_content_preview, calculate_heat_rating, get_toxicity_level
 import time
+
+# import chromadb
+
+# # Force Chroma to use DuckDB instead of SQLite
+# import chromadb
+
+# client = chromadb.Client() 
 
 
 # Configure page
