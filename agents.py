@@ -3,22 +3,18 @@ from typing import Dict, List
 import streamlit as st
 from dotenv import load_dotenv
 import os
-import streamlit as st
 
 
-api_key = st.session_state.get("groq_api_key")
-
-
-if not api_key or not api_key.startswith("gsk_"):
-    st.error("Authentication Failed. Please login first.")
-    st.switch_page("pages/login.py")
-    st.stop()
-
-llm = LLM(
-    model="groq/llama-3.1-8b-instant",
-    api_key=api_key.strip()  # strip any whitespace
-)
-
+def _get_llm():
+    api_key = st.session_state.get("groq_api_key")
+    if not api_key or not api_key.startswith("gsk_"):
+        st.error("Authentication Failed. Please login first.")
+        st.switch_page("pages/login.py")
+        st.stop()
+    return LLM(
+        model="groq/llama-3.1-8b-instant",
+        api_key=api_key.strip()
+    )
 
 
 class AgentRegistry:
@@ -30,6 +26,7 @@ class AgentRegistry:
     
     def _get_default_agents(self) -> Dict[str, Agent]:
         """Returns predefined personality agents"""
+        llm = _get_llm()
         return {
             "The Critic": Agent(
                 name="The Critic",
@@ -120,6 +117,7 @@ class AgentRegistry:
     
     def spawn_agent(self, name: str, tone: str, goal: str) -> Agent:
         """Create a new custom agent"""
+        llm = _get_llm()
         agent = Agent(
             name=name,
             role=f"Custom commenter with a {tone} tone",
