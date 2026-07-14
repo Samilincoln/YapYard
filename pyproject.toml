@@ -11,4 +11,5 @@ dependencies = [
     "pysqlite3-binary; sys_platform != 'win32'",
     "python-dotenv",
     "groq",
+    "litellm",
 ]
